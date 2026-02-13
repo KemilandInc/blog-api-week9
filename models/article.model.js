@@ -14,9 +14,9 @@ const articleSchema = new mongoose.Schema({
     minlength: 20
   },
   author: {
-    type: String, 
-    default: "Guest",
-    trim: true // Standardizes author names by removing extra spaces
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
   // Added tags: Standard backend feature for filtering/querying data
   tags: {
