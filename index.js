@@ -1,30 +1,15 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./database/connectDB');
-const RequestLogger = require('./middlewares/logger.js');
-const errorhandler = require('./middlewares/errorHandler.js');
+// 1. Imports the validated variables from the new config
+// This automatically runs the "check" I wrote in env.js
+const { PORT } = require('./src/config/env.js'); 
 
-const ArticleRoutes = require('./routes/article.route.js');
-const UserRoutes = require('./routes/user.route.js');
+const app = require('./src/app.js');
+const connectDB = require('./src/config/connectDB.js');
 
-const app = express();
-const PORT = process.env.PORT; 
-
-connectDB();
-
-app.use(express.json());
-app.use(cors('*'));
-
-app.use(RequestLogger);
-
-app.use('/api', ArticleRoutes);
-app.use('/api/users', UserRoutes);
-
-app.use(errorhandler);
-
-
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// 2. Connects to the database first, then start the server
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is verified and running on port ${PORT}`);
+    });
+}).catch(err => {
+    console.error("Failed to start server:", err.message);
 });

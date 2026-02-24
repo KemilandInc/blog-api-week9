@@ -13,18 +13,20 @@ const {
 
 const router = express.Router();
 
-router.post('/articles', requireAuth, postArticle);
+router.use(requireAuth);
 
-router.get('/articles', requireAuth, getAllArticle);
+router.post('/articles', postArticle);
+
+router.get('/articles', getAllArticle);
 
 //  BONUS QUESTION 5: SEARCH ROUTE 
 // Must be ABOVE the /:id route so it doesn't get confused for an ID
 router.get('/articles/search', searchArticles);
 
-router.get('/articles/:id', requireAuth, getArticleById);
+router.get('/articles/:id', getArticleById);
 
-router.put('/articles/:id', requireAuth, updateArticleById);
+router.put('/articles/:id', updateArticleById);
 
-router.delete('/articles/:id', requireAuth, deleteArticleById);
+router.delete('/articles/:id', deleteArticleById);
 
 module.exports = router;
